@@ -1,0 +1,7 @@
+.ignore.swp
+__pycache__/
+bin/
+config.yaml
+include/
+lib/
+pip-selfcheck.json
