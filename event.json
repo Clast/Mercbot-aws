@@ -1,4 +1,20 @@
 {
-  "pi": 3.14,
-  "e": 2.718
+  "currentIntent": {
+    "slots": {
+      "askUser": null,
+      "askForArticleNumber": null
+    },
+    "name": "GetNews",
+    "confirmationStatus": "None"
+  },
+  "bot": {
+    "alias": "$LATEST",
+    "version": "$LATEST",
+    "name": "NLPchun"
+  },
+  "userId": "John",
+  "invocationSource": "DialogCodeHook",
+  "outputDialogMode": "Text",
+  "messageVersion": "1.0",
+  "sessionAttributes": {}
 }
