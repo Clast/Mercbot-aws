@@ -1,0 +1,591 @@
+import json
+import urllib.parse
+import boto3
+import math
+import dateutil.parser
+import datetime
+import time
+import os
+import logging
+import pickle
+import string
+import operator
+
+keywords = ["album",
+ "kratz",
+ "youve",
+ "services",
+ "july",
+ "semesters",
+ "nonprofit",
+ "rion",
+ "spectrum",
+ "campaign",
+ "harvey",
+ "degree",
+ "immigration",
+ "cup",
+ "survey",
+ "briggs",
+ "freshman",
+ "offices",
+ "wildenthal",
+ "amp",
+ "cricket",
+ "taskforce",
+ "sustainability",
+ "chemistry",
+ "possession",
+ "consumption",
+ "giving",
+ "thermostats",
+ "mercury",
+ "security",
+ "sacrifice",
+ "dont",
+ "stranded",
+ "mentor",
+ "valerie",
+ "lee",
+ "construction",
+ "monuments",
+ "hamilton",
+ "dengle",
+ "dunlop",
+ "killed",
+ "dispatch",
+ "morgan",
+ "california",
+ "division",
+ "event",
+ "mac",
+ "uemr",
+ "james",
+ "rachavong",
+ "scar",
+ "recognize",
+ "burning",
+ "practice",
+ "disclose",
+ "usa",
+ "sports",
+ "donors",
+ "daca",
+ "senators",
+ "network",
+ "udozorh",
+ "fraternity",
+ "schans",
+ "odessa",
+ "house",
+ "mexico",
+ "vigil",
+ "jindalconnect",
+ "nadir",
+ "van",
+ "efficient",
+ "officers",
+ "corrected",
+ "always",
+ "recovery",
+ "record",
+ "attacker",
+ "athletes",
+ "dreher",
+ "eckel",
+ "institute",
+ "local",
+ "aug",
+ "play",
+ "victims",
+ "ritual",
+ "mentors",
+ "devices",
+ "theft",
+ "violence",
+ "teams",
+ "sculpture",
+ "harrington",
+ "molina",
+ "leave",
+ "university",
+ "scared",
+ "fielding",
+ "mancuso",
+ "access",
+ "hurricane",
+ "system",
+ "masters",
+ "victor",
+ "coding",
+ "perez",
+ "contacted",
+ "peer",
+ "beijing",
+ "personnel",
+ "worth",
+ "brothers",
+ "write",
+ "energy",
+ "name",
+ "curriculum",
+ "restricted",
+ "release",
+ "greek",
+ "fraternitys",
+ "players",
+ "som",
+ "dues",
+ "healthy",
+ "lokesh",
+ "relocations",
+ "kill",
+ "humanities",
+ "shop",
+ "dickson",
+ "room",
+ "music",
+ "nancy",
+ "information",
+ "tacker",
+ "dourty",
+ "recording",
+ "meetings",
+ "game",
+ "chartwells",
+ "mccallum",
+ "enrollment",
+ "goodwin",
+ "sg",
+ "rally",
+ "gattepalli",
+ "mexican",
+ "shooting",
+ "debit",
+ "roc",
+ "site",
+ "medical",
+ "committee",
+ "bad",
+ "water",
+ "trainer",
+ "jsom",
+ "removal",
+ "scorch",
+ "organizations",
+ "cometnet",
+ "relations",
+ "lots",
+ "cep",
+ "shes",
+ "arrested",
+ "rogers",
+ "patient",
+ "different",
+ "hours",
+ "victors",
+ "orion",
+ "card",
+ "photo",
+ "increased",
+ "weve",
+ "davidson",
+ "show",
+ "synergy",
+ "lyrics",
+ "australia",
+ "semester",
+ "transfer",
+ "kaplan",
+ "der",
+ "capacity",
+ "west",
+ "selected",
+ "points",
+ "department",
+ "along",
+ "financial",
+ "jim",
+ "junt",
+ "vote",
+ "74",
+ "collin",
+ "rawlings",
+ "freshmen",
+ "recruitment",
+ "harder",
+ "professorate",
+ "orton",
+ "head",
+ "center",
+ "office",
+ "fla",
+ "plant",
+ "air",
+ "weimer",
+ "knowing",
+ "spending",
+ "opened",
+ "employee",
+ "welcome",
+ "space",
+ "visitor",
+ "project",
+ "criteria",
+ "powergrid",
+ "histories",
+ "care",
+ "districts",
+ "food",
+ "novak",
+ "hickman",
+ "health",
+ "mat",
+ "citation",
+ "routers",
+ "program",
+ "guitar",
+ "nevada",
+ "votes",
+ "athletic",
+ "option",
+ "gundy",
+ "mascot",
+ "successfully",
+ "temperature",
+ "north",
+ "minor",
+ "cash",
+ "party",
+ "rising",
+ "garcia",
+ "graduway",
+ "emts",
+ "contains",
+ "isa",
+ "leed",
+ "pride",
+ "experiment",
+ "sharing",
+ "guidance",
+ "wordpress",
+ "ceremony",
+ "jose",
+ "agee",
+ "chief",
+ "build",
+ "rating",
+ "fall",
+ "today",
+ "electricity",
+ "dining",
+ "crane",
+ "lets",
+ "jindal",
+ "county",
+ "found",
+ "sometimes",
+ "temoc",
+ "michigan",
+ "web",
+ "houston",
+ "issued",
+ "council",
+ "born",
+ "bookstore",
+ "training",
+ "salm",
+ "confederate",
+ "courtesy",
+ "june",
+ "dandridge",
+ "apartment",
+ "songs",
+ "anupam",
+ "core",
+ "powell",
+ "lgbt",
+ "mentoring",
+ "expansion",
+ "counseling",
+ "alcohol",
+ "gary",
+ "protest",
+ "police",
+ "deffner",
+ "goldvarg",
+ "conservation",
+ "sgs",
+ "appeal",
+ "dougherty",
+ "platform",
+ "building",
+ "revision",
+ "spencer",
+ "carter",
+ "meredith",
+ "lgbtq",
+ "internet",
+ "response",
+ "gender",
+ "global",
+ "october",
+ "song",
+ "warner",
+ "bai",
+ "store",
+ "coffee",
+ "young",
+ "singh",
+ "plano",
+ "alumni",
+ "universities",
+ "printmaking",
+ "accounts",
+ "field",
+ "kept",
+ "novaks",
+ "directory",
+ "candidates",
+ "resigned",
+ "car",
+ "remove",
+ "justice",
+ "inspection",
+ "hight",
+ "statue",
+ "edgington",
+ "citations",
+ "trip",
+ "score",
+ "index",
+ "buildings",
+ "fire",
+ "money",
+ "zacharias",
+ "arts",
+ "converting",
+ "staff",
+ "fsl",
+ "frn",
+ "cannedy",
+ "affairs",
+ "indian",
+ "classes",
+ "art",
+ "carolina",
+ "research",
+ "grown",
+ "credit",
+ "hall",
+ "spend",
+ "joining",
+ "groups",
+ "facility",
+ "career",
+ "perfect",
+ "team",
+ "levels",
+ "atm",
+ "favorite",
+ "ssc",
+ "100",
+ "emergency"
+]
+s3 = boto3.resource('s3')
+s3_client = boto3.client('s3')
+s3_client.download_file('mercbucket', 'words_to_articles.pickle', '/tmp/words_to_article.pickle')
+s3_client.download_file('mercbucket', 'knowledge_base.pickle', '/tmp/knowledge_base.pickle')
+with open('/tmp/words_to_article.pickle', 'rb') as handle:
+    words_to_articles = pickle.load(handle)
+with open('/tmp/knowledge_base.pickle', 'rb') as handle:
+    knowledge_base = pickle.load(handle)
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+def get_slots(intent_request):
+    return intent_request['currentIntent']['slots']
+def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message):
+    return {
+        'sessionAttributes': session_attributes,
+        'dialogAction': {
+            'type': 'ElicitSlot',
+            'intentName': intent_name,
+            'slots': slots,
+            'slotToElicit': slot_to_elicit,
+            'message': message
+        }
+    }
+def elicit_intent(session_attributes, intent_name, slots, slot_to_elicit, message):
+    return {
+        'sessionAttributes': session_attributes,
+        'dialogAction': {
+            'type': 'ElicitIntent',
+            'message': message
+        }
+    }
+def close(session_attributes, fulfillment_state, message):
+    response = {
+        'sessionAttributes': session_attributes,
+        'dialogAction': {
+            'type': 'Close',
+            'fulfillmentState': fulfillment_state,
+            'message': message
+        }
+    }
+    return response
+def delegate(session_attributes, slots):
+    return {
+        'sessionAttributes': session_attributes,
+        'dialogAction': {
+            'type': 'Delegate',
+            'slots': slots
+        }
+    }
+def addSessionAttribute(session_attributes, key, value):
+    return{
+        session_attributes
+
+    }
+""" --- Helper Functions --- """
+def get_news(query):
+    possible_target_article = {}
+    for word in query.split():
+        if word in keywords:
+            contained = words_to_articles[word]
+            for k in contained:
+                highestscore = 0
+                score = knowledge_base[k][2][word]
+                if k not in possible_target_article:
+                    possible_target_article[k] = score
+                else:
+                    possible_target_article[k] += score
+    if len(possible_target_article) > 0:
+        target_article = max(possible_target_article.items(), key=operator.itemgetter(1))[0]
+        summaryList = knowledge_base[target_article][3]
+        summary = "Here's what I found that best relates to your query: \n"
+        for listitem in summaryList:
+            summary += str(listitem) + " "
+        summary += "You can ask me something else or say 'endsesh' to save your user model and close this session."
+        return summary
+    else:
+        return "Sorry, the query you entered does not contain any keyword that I can use to locate any information. Please try something else."
+""" Get the users name and store it in Session Data"""
+def getNews(intent_request):
+    source = intent_request['invocationSource']
+    usersName = get_slots(intent_request)["getName"]
+    slots = get_slots(intent_request)
+    sessionAttributes = intent_request['sessionAttributes']
+    query = get_slots(intent_request)["askUser"]
+    if intent_request['inputTranscript'] != "endsesh":
+        if "firstMessage" not in sessionAttributes:
+            sessionAttributes["firstMessage"] = "false"
+            message = "Hi there, with whom am I speaking?"
+            return elicit_slot(intent_request['sessionAttributes'],
+                               intent_request['currentIntent']['name'],
+                               slots,
+                               'getName',
+                               {'contentType': 'PlainText', 'content': message}
+                               )
+        if usersName == None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
+            message = "That's an invalid name. Try again, please."
+            return elicit_slot(intent_request['sessionAttributes'],
+                               intent_request['currentIntent']['name'],
+                               slots,
+                               'getName',
+                               {'contentType': 'PlainText', 'content': message}
+                               )
+        if "usersName" not in sessionAttributes:
+            sessionAttributes["usersName"] = usersName  # Store username in session data
+        #Later, we can check our S3 db and see if the user is new or not and change the message.
+        if "userQueries" not in sessionAttributes:
+            sessionAttributes["userQueries"] = 1
+            message = "Hello " + usersName + "! What would you like me to tell you about today?"
+            userQuerySlots = {
+            "usersQuery": "null"
+            }
+            return elicit_slot(intent_request['sessionAttributes'],
+                            intent_request['currentIntent']['name'],
+                           slots,
+                           "askUser",
+                           {'contentType': 'PlainText', 'content': message}
+                           )
+        queryCount = int(sessionAttributes["userQueries"])
+        if "queryHistory" not in sessionAttributes:
+            sessionAttributes["queryHistory"] = json.dumps({1: query})
+        else:  
+            qh = json.loads(sessionAttributes["queryHistory"])
+            qh.update({queryCount:query})
+            sessionAttributes["queryHistory"] = json.dumps(qh, separators=(',',':'))
+        queryCount += 1
+        sessionAttributes["userQueries"] = queryCount
+        #check query for key words
+        if query != None:
+            summary = get_news(query)
+            return elicit_slot(intent_request['sessionAttributes'],
+                            intent_request['currentIntent']['name'],
+                           slots,
+                           "askUser",
+                           {'contentType': 'PlainText', 'content': summary}
+                           )
+        else:
+            message = "I'm sorry but I have no information on your query '{}'. Please ask me something else".format(query)
+            return elicit_slot(intent_request['sessionAttributes'],
+                            intent_request['currentIntent']['name'],
+                           slots,
+                           "askUser",
+                           {'contentType': 'PlainText', 'content': message}
+                           )
+    else:
+        if 'usersName' in sessionAttributes:
+            flag = False
+            for file in s3_client.objects.all():
+                filename = str(file).replace(".json","")
+                if usersName == filename:
+                    flag = True
+                    s3_client.download_file('mercbucket', file, '/tmp/{}.json'.format(usersName))
+                    currentuser = json.loads(sessionAttributes)
+                    with open('/tmp/{}.json'.format(usersName), 'rb') as handle:
+                        userfile = json.load(handle)
+                        currentuser.update(userfile)
+                    with open('/tmp/{}.json'.format(usersName), 'wb') as handle:
+                        json.dump(currentuser, handle)
+                    s3_connection = boto.connect_s3()
+                    bucket = s3_connection.get_bucket('mercbucket')
+                    key = boto.s3.key.Key(bucket, '/tmp/{}.json'.format(usersName))
+                    with open('/tmp/{}.json'.format(usersName)) as f:
+                        key.send_file(f)
+            if flag == False:
+                self.client.put_object(Bucket='mercbucket',Key='{}.json'.format(usersName)) #puts the obj up
+                s3_client.download_file('mercbucket', file, '/tmp/{}.json'.format(usersName))#downloads it
+                currentuser = json.loads(sessionAttributes)#turns session into json obj
+                with open('/tmp/{}.json'.format(usersName), 'wb') as handle:#write to file
+                    json.dump(currentuser, handle)
+                s3_connection = boto.connect_s3()
+                bucket = s3_connection.get_bucket('mercbucket')
+                key = boto.s3.key.Key(bucket, '/tmp/{}.json'.format(usersName))
+                with open('/tmp/{}.json'.format(usersName)) as f:
+                    key.send_file(f)
+                
+""" --- Intents --- """
+
+
+def dispatch(intent_request):
+    logger.debug(
+        'dispatch userId={}, intentName={}'.format(intent_request['userId'], intent_request['currentIntent']['name']))
+
+    intent_name = intent_request['currentIntent']['name']
+
+    # Dispatch to your bot's intent handlers
+    if intent_name == 'GetNews':
+        return getNews(intent_request)
+
+    raise Exception('Intent with name ' + intent_name + ' not supported')
+
+
+""" --- Main handler --- """
+
+
+def lambda_handler(event, context):
+    return dispatch(event)
+
