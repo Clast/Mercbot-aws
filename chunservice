@@ -11,351 +11,7 @@ import pickle
 import string
 import operator
 import ast
-keywords = ["album",
-"kratz",
-"youve",
-"services",
-"july",
-"semesters",
-"nonprofit",
-"rion",
-"spectrum",
-"campaign",
-"harvey",
-"degree",
-"immigration",
-"cup",
-"survey",
-"briggs",
-"freshman",
-"offices",
-"wildenthal",
-"amp",
-"cricket",
-"taskforce",
-"sustainability",
-"chemistry",
-"possession",
-"consumption",
-"giving",
-"thermostats",
-"mercury",
-"security",
-"sacrifice",
-"dont",
-"stranded",
-"mentor",
-"valerie",
-"lee",
-"construction",
-"monuments",
-"hamilton",
-"dengle",
-"dunlop",
-"killed",
-"dispatch",
-"morgan",
-"california",
-"division",
-"event",
-"mac",
-"uemr",
-"james",
-"rachavong",
-"scar",
-"recognize",
-"burning",
-"practice",
-"disclose",
-"usa",
-"sports",
-"donors",
-"daca",
-"senators",
-"network",
-"udozorh",
-"fraternity",
-"schans",
-"odessa",
-"house",
-"mexico",
-"vigil",
-"jindalconnect",
-"nadir",
-"van",
-"efficient",
-"officers",
-"corrected",
-"always",
-"recovery",
-"record",
-"attacker",
-"athletes",
-"dreher",
-"eckel",
-"institute",
-"local",
-"aug",
-"play",
-"victims",
-"ritual",
-"mentors",
-"devices",
-"theft",
-"violence",
-"teams",
-"sculpture",
-"harrington",
-"molina",
-"leave",
-"university",
-"scared",
-"fielding",
-"mancuso",
-"access",
-"hurricane",
-"system",
-"masters",
-"victor",
-"coding",
-"perez",
-"contacted",
-"peer",
-"beijing",
-"personnel",
-"worth",
-"brothers",
-"write",
-"energy",
-"name",
-"curriculum",
-"restricted",
-"release",
-"greek",
-"fraternitys",
-"players",
-"som",
-"dues",
-"healthy",
-"lokesh",
-"relocations",
-"kill",
-"humanities",
-"shop",
-"dickson",
-"room",
-"music",
-"nancy",
-"information",
-"tacker",
-"dourty",
-"recording",
-"meetings",
-"game",
-"chartwells",
-"mccallum",
-"enrollment",
-"goodwin",
-"sg",
-"rally",
-"gattepalli",
-"mexican",
-"shooting",
-"debit",
-"roc",
-"site",
-"medical",
-"committee",
-"bad",
-"water",
-"trainer",
-"jsom",
-"removal",
-"scorch",
-"organizations",
-"cometnet",
-"relations",
-"lots",
-"cep",
-"shes",
-"arrested",
-"rogers",
-"patient",
-"different",
-"hours",
-"victors",
-"orion",
-"card",
-"photo",
-"increased",
-"weve",
-"davidson",
-"show",
-"synergy",
-"lyrics",
-"australia",
-"semester",
-"transfer",
-"kaplan",
-"der",
-"capacity",
-"west",
-"selected",
-"points",
-"department",
-"along",
-"financial",
-"jim",
-"junt",
-"vote",
-"74",
-"collin",
-"rawlings",
-"freshmen",
-"recruitment",
-"harder",
-"professorate",
-"orton",
-"head",
-"center",
-"office",
-"fla",
-"plant",
-"air",
-"weimer",
-"knowing",
-"spending",
-"opened",
-"employee",
-"welcome",
-"space",
-"visitor",
-"project",
-"criteria",
-"powergrid",
-"histories",
-"care",
-"districts",
-"food",
-"novak",
-"hickman",
-"health",
-"mat",
-"citation",
-"routers",
-"program",
-"guitar",
-"nevada",
-"votes",
-"athletic",
-"option",
-"gundy",
-"mascot",
-"successfully",
-"temperature",
-"north",
-"minor",
-"cash",
-"party",
-"rising",
-"garcia",
-"graduway",
-"emts",
-"contains",
-"isa",
-"leed",
-"pride",
-"experiment",
-"sharing",
-"guidance",
-"wordpress",
-"ceremony",
-"jose",
-"agee",
-"chief",
-"build",
-"rating",
-"fall",
-"today",
-"electricity",
-"dining",
-"crane",
-"lets",
-"jindal",
-"county",
-"found",
-"sometimes",
-"temoc",
-"michigan",
-"web",
-"houston",
-"issued",
-"council",
-"born",
-"bookstore",
-"training",
-"salm",
-"confederate",
-"courtesy",
-"june",
-"dandridge",
-"apartment",
-"songs",
-"anupam",
-"core",
-"powell",
-"lgbt",
-"mentoring",
-"expansion",
-"counseling",
-"alcohol",
-"gary",
-"protest",
-"police",
-"deffner",
-"goldvarg",
-"conservation",
-"sgs",
-"appeal",
-"dougherty",
-"platform",
-"building",
-"revision",
-"spencer",
-"carter",
-"meredith",
-"lgbtq",
-"internet",
-"response",
-"gender",
-"global",
-"october",
-"song",
-"warner",
-"bai",
-"store",
-"coffee",
-"young",
-"singh",
-"plano",
-"alumni",
-"universities",
-"printmaking",
-"accounts",
-"field",
-"kept",
-"novaks",
-"directory",
-"candidates",
-"resigned",
-"car",
-"remove",
-"justice",
-"inspection",
-"hight",
-"statue",
-"edgington",
-"citations","trip","score","index","buildings","fire","money","zacharias","arts","converting","staff","fsl","frn","cannedy","affairs","indian","classes","art","carolina","research","grown","credit","hall","spend","joining","groups","facility","career","perfect","team","levels","atm","favorite","ssc","100","emergency"]
+keywords = ["album", "kratz", "youve", "services", "july", "semesters", "nonprofit", "rion", "spectrum", "campaign", "harvey", "degree", "immigration", "cup", "survey", "briggs", "freshman", "offices", "wildenthal", "amp", "cricket", "taskforce", "sustainability", "chemistry", "possession", "consumption", "giving", "thermostats", "mercury", "security", "sacrifice", "dont", "stranded", "mentor", "valerie", "lee", "construction", "monuments", "hamilton", "dengle", "dunlop", "killed", "dispatch", "morgan", "california", "division", "event", "mac", "uemr", "james", "rachavong", "scar", "recognize", "burning", "practice", "disclose", "usa", "sports", "donors", "daca", "senators", "network", "udozorh", "fraternity", "schans", "odessa", "house", "mexico", "vigil", "jindalconnect", "nadir", "van", "efficient", "officers", "corrected", "always", "recovery", "record", "attacker", "athletes", "dreher", "eckel", "institute", "local", "aug", "play", "victims", "ritual", "mentors", "devices", "theft", "violence", "teams", "sculpture", "harrington", "molina", "leave", "university", "scared", "fielding", "mancuso", "access", "hurricane", "system", "masters", "victor", "coding", "perez", "contacted", "peer", "beijing", "personnel", "worth", "brothers", "write", "energy", "name", "curriculum", "restricted", "release", "greek", "fraternitys", "players", "som", "dues", "healthy", "lokesh", "relocations", "kill", "humanities", "shop", "dickson", "room", "music", "nancy", "information", "tacker", "dourty", "recording", "meetings", "game", "chartwells", "mccallum", "enrollment", "goodwin", "sg", "rally", "gattepalli", "mexican", "shooting", "debit", "roc", "site", "medical", "committee", "bad", "water", "trainer", "jsom", "removal", "scorch", "organizations", "cometnet", "relations", "lots", "cep", "shes", "arrested", "rogers", "patient", "different", "hours", "victors", "orion", "card", "photo", "increased", "weve", "davidson", "show", "synergy", "lyrics", "australia", "semester", "transfer", "kaplan", "der", "capacity", "west", "selected", "points", "department", "along", "financial", "jim", "junt", "vote", "74", "collin", "rawlings", "freshmen", "recruitment", "harder", "professorate", "orton", "head", "center", "office", "fla", "plant", "air", "weimer", "knowing", "spending", "opened", "employee", "welcome", "space", "visitor", "project", "criteria", "powergrid", "histories", "care", "districts", "food", "novak", "hickman", "health", "mat", "citation", "routers", "program", "guitar", "nevada", "votes", "athletic", "option", "gundy", "mascot", "successfully", "temperature", "north", "minor", "cash", "party", "rising", "garcia", "graduway", "emts", "contains", "isa", "leed", "pride", "experiment", "sharing", "guidance", "wordpress", "ceremony", "jose", "agee", "chief", "build", "rating", "fall", "today", "electricity", "dining", "crane", "lets", "jindal", "county", "found", "sometimes", "temoc", "michigan", "web", "houston", "issued", "council", "born", "bookstore", "training", "salm", "confederate", "courtesy", "june", "dandridge", "apartment", "songs", "anupam", "core", "powell", "lgbt", "mentoring", "expansion", "counseling", "alcohol", "gary", "protest", "police", "deffner", "goldvarg", "conservation", "sgs", "appeal", "dougherty", "platform", "building", "revision", "spencer", "carter", "meredith", "lgbtq", "internet", "response", "gender", "global", "october", "song", "warner", "bai", "store", "coffee", "young", "singh", "plano", "alumni", "universities", "printmaking", "accounts", "field", "kept", "novaks", "directory", "candidates", "resigned", "car", "remove", "justice", "inspection", "hight", "statue", "edgington", "citations","trip","score","index","buildings","fire","money","zacharias","arts","converting","staff","fsl","frn","cannedy","affairs","indian","classes","art","carolina","research","grown","credit","hall","spend","joining","groups","facility","career","perfect","team","levels","atm","favorite","ssc","100","emergency"]
 s3 = boto3.resource('s3')
 s3_client = boto3.client('s3')
 s3_client.download_file('mercbucket', 'words_to_articles.pickle', '/tmp/words_to_article.pickle')
@@ -370,8 +26,6 @@ logger.setLevel(logging.DEBUG)
 
 def get_slots(intent_request):
     return intent_request['currentIntent']['slots']
-
-
 def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message):
     return {
         'sessionAttributes': session_attributes,
@@ -383,8 +37,6 @@ def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message)
             'message': message
         }
     }
-
-""" --- Helper Functions --- """
 def get_news(query):
     possible_target_article = {}
     for word in query.split():
@@ -407,8 +59,6 @@ def get_news(query):
         return summary
     else:
         return "Sorry, the query you entered does not contain any keyword that I can use to locate any information. Please try something else or say 'endsesh' to close this session"
-
-
 def byeName(name):
     response = {
         "dialogAction": {
@@ -421,8 +71,6 @@ def byeName(name):
       }
     }
     return response
-
-
 def bye():
     response = {
         "dialogAction": {
@@ -435,8 +83,6 @@ def bye():
       }
     }
     return response
-
-
 def getuserName(intent_request):
     sessionAttributes = intent_request['sessionAttributes']
     slots = get_slots(intent_request)
@@ -458,8 +104,6 @@ def getuserName(intent_request):
                            'getName',
                            {'contentType': 'PlainText', 'content': message}
                            )
-        
-        
 def checkAcc(intent_request):
     sessionAttributes = intent_request['sessionAttributes']
     sessionAttributes["existingAcc"] = "False"
@@ -469,7 +113,6 @@ def checkAcc(intent_request):
     for x in range(0, len(objects["Contents"])):
         if newfile == objects["Contents"][x]["Key"]:
             sessionAttributes['existingAcc'] = "True"
-                               
 def askSummary(intent_request):
     sessionAttributes = intent_request['sessionAttributes']
     slots = get_slots(intent_request)
@@ -481,7 +124,6 @@ def askSummary(intent_request):
                    "history",
                    {'contentType': 'PlainText', 'content': message}
                    )
-                   
 def getSummary(intent_request):
     sessionAttributes = intent_request['sessionAttributes']
     s3_client.download_file('mercbucket', sessionAttributes['usersName']+".txt", '/tmp/{}.txt'.format(sessionAttributes['usersName']))
@@ -490,7 +132,6 @@ def getSummary(intent_request):
     text = text.replace('\\', '')
     text = text.replace('"', ' ')
     return text
-    
 def hstry(intent_request):
     sessionAttributes = intent_request['sessionAttributes']
     slots = get_slots(intent_request)
@@ -504,8 +145,18 @@ def hstry(intent_request):
                        "askUser",
                        {'contentType': 'PlainText', 'content': message}
                        )
-    
-""" Get the users name and store it in Session Data"""
+""" 
+List of items in session attributes I used to keep track of the conversation
+usersName - name of user
+firstMessage - sees if the user has said anything already; to be used to find a valid name
+existingAcc - flag that tells us if there is an account with the same name
+askSumm - flag that tells us if we have been asked about the summary; only existing accounts have this
+history - stores the past queries; only existing accounts have this
+hstry - flag that tells us if we can get our past queries; only existing acounts have this
+firstQuery - same intention as firstMessage; to get the first query out once with an unique message
+userQueries - number of current queries
+queryHistory - dict of current queries
+"""
 def getNews(intent_request):
     sessionAttributes = intent_request['sessionAttributes']
     source = intent_request['invocationSource']
@@ -514,7 +165,7 @@ def getNews(intent_request):
     slots = get_slots(intent_request)
     query = get_slots(intent_request)["askUser"]
     hist = get_slots(intent_request)['history']
-    if utter != "endsesh":
+    if utter != "endsesh": # do this part if the user isnt ending the session; else check if it's possible to upload stuff
         try:
             if usersName != None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
                 sessionAttributes["usersName"] = usersName  # Store username in session data
@@ -522,14 +173,14 @@ def getNews(intent_request):
                 return getuserName(intent_request)
             if "existingAcc" not in sessionAttributes: # checks for the user account
                 checkAcc(intent_request)
-            if sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "False": #if account exists and we havent asked about the summary
+            if sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "False": # if account exists and we havent asked about the summary
                 return askSummary(intent_request)
-            elif sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "True" and "history" not in sessionAttributes: #return summary
+            elif sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "True" and "history" not in sessionAttributes: # return summary answers
                 if hist == 'yes' or hist == 'Yes':
                     sessionAttributes['history'] = getSummary(intent_request)
                 else:
                     sessionAttributes['history'] = "no]]]"
-            #gets user queries OR history
+            # gets user queries OR history
             if sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "True" and sessionAttributes['history'] == "no]]]" and 'hstry' not in sessionAttributes:
                 message = "Never mind. You can always find your history by saying 'HSTRY'. What would you want to know today?"
                 sessionAttributes['hstry'] = "done"
@@ -579,8 +230,7 @@ def getNews(intent_request):
                 qh = ast.literal_eval(qh)
                 qh.update({queryCount:query})
                 sessionAttributes["queryHistory"] = str(qh)
-            #sessionAttributes["userQueries"] = queryCount
-            #check query for key words
+            # check query for key words
             if query != None:
                 summary = get_news(query)
                 return elicit_slot(intent_request['sessionAttributes'],
@@ -601,14 +251,13 @@ def getNews(intent_request):
            return byeName(e)
     else:
         try:
-            if "queryHistory" in sessionAttributes:
-                tmplen = ast.literal_eval(sessionAttributes["queryHistory"])
-                if len(tmplen) > 0:
-                    flag = False
-                    # Get a list of all objects
-                    objects = s3_client.list_objects(Bucket='mercbucket')
+            if "queryHistory" in sessionAttributes: # if the current user has any query to actually upload
+                tmplen = ast.literal_eval(sessionAttributes["queryHistory"]) # turns strings into dicts
+                if len(tmplen) > 0: # checks if dict is just empty
+                    flag = False # flag will be tru if an existing file is found
+                    objects = s3_client.list_objects(Bucket='mercbucket') # Get a list of all objects
                     newfile = sessionAttributes["usersName"]+".txt"
-                    for x in range(0, len(objects["Contents"])): #looks for existing file. if it exists, make one new dict and rewrite to file
+                    for x in range(0, len(objects["Contents"])): # looks for existing file. if it exists, make one new dict and rewrite to file
                         if newfile == objects["Contents"][x]["Key"]:
                             flag = True
                             s3_client.download_file('mercbucket', newfile, '/tmp/{}'.format(newfile))
@@ -618,12 +267,14 @@ def getNews(intent_request):
                             oldQueries = ast.literal_eval(userstr)
                             tmpdict = {}
                             counter = 0
+                            # the two loops adds to the new tmpdict, combining all queries new and old
                             for values in oldQueries.values():
                                 tmpdict[counter] = values
                                 counter += 1
                             for values in tmplen.values():
                                 tmpdict[counter] = values
                                 counter += 1
+                            # upload 
                             with open('/tmp/{}.txt'.format(sessionAttributes["usersName"]), 'w') as handle:
                                 handle.write(str(tmpdict))
                             with open('/tmp/{}'.format(newfile), 'rb') as f:
@@ -644,24 +295,15 @@ def getNews(intent_request):
                     return bye()
         except Exception as e:
             return byeName(e)
-
-
 def dispatch(intent_request):
     logger.debug(
         'dispatch userId={}, intentName={}'.format(intent_request['userId'], intent_request['currentIntent']['name']))
-
     intent_name = intent_request['currentIntent']['name']
-
-    # Dispatch to your bot's intent handlers
     if intent_name == 'GetNews':
         return getNews(intent_request)
-
     raise Exception('Intent with name ' + intent_name + ' not supported')
-
-
 def lambda_handler(event, context):
     try:
         return dispatch(event)
     except Exception as e:
         return byeName(e)
-
