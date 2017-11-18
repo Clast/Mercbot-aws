@@ -10,7 +10,7 @@ import logging
 import pickle
 import string
 import operator
-
+import ast
 keywords = ["album",
 "kratz",
 "youve",
@@ -436,91 +436,150 @@ def bye():
     }
     return response
 
+
+def getuserName(intent_request):
+    sessionAttributes = intent_request['sessionAttributes']
+    slots = get_slots(intent_request)
+    usersName = get_slots(intent_request)['getName']
+    if "firstMessage" not in sessionAttributes:
+        sessionAttributes['firstMessage'] = "false"
+        message = "Hi there, with whom am I speaking?"
+        return elicit_slot(intent_request['sessionAttributes'],
+                           intent_request['currentIntent']['name'],
+                           slots,
+                           'getName',
+                           {'contentType': 'PlainText', 'content': message}
+                           )
+    if usersName == None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
+        message = "That's an invalid name. Try again, please."
+        return elicit_slot(intent_request['sessionAttributes'],
+                           intent_request['currentIntent']['name'],
+                           slots,
+                           'getName',
+                           {'contentType': 'PlainText', 'content': message}
+                           )
+        
+        
+def checkAcc(intent_request):
+    sessionAttributes = intent_request['sessionAttributes']
+    sessionAttributes["existingAcc"] = "False"
+    sessionAttributes["askSumm"] = "False"
+    objects = s3_client.list_objects(Bucket='mercbucket')
+    newfile = sessionAttributes["usersName"]+".txt"
+    for x in range(0, len(objects["Contents"])):
+        if newfile == objects["Contents"][x]["Key"]:
+            sessionAttributes['existingAcc'] = "True"
+                               
+def askSummary(intent_request):
+    sessionAttributes = intent_request['sessionAttributes']
+    slots = get_slots(intent_request)
+    sessionAttributes['askSumm'] = "True"
+    message = "Welcome back, {}! Do you want to view your past queries?".format(sessionAttributes['usersName'])
+    return elicit_slot(intent_request['sessionAttributes'],
+                    intent_request['currentIntent']['name'],
+                   slots,
+                   "history",
+                   {'contentType': 'PlainText', 'content': message}
+                   )
+                   
+def getSummary(intent_request):
+    sessionAttributes = intent_request['sessionAttributes']
+    s3_client.download_file('mercbucket', sessionAttributes['usersName']+".txt", '/tmp/{}.txt'.format(sessionAttributes['usersName']))
+    handle = open('/tmp/{}.txt'.format(sessionAttributes['usersName']), 'r')
+    text = handle.read()
+    text = text.replace('\\', '')
+    text = text.replace('"', ' ')
+    return text
+    
+def hstry(intent_request):
+    sessionAttributes = intent_request['sessionAttributes']
+    slots = get_slots(intent_request)
+    if sessionAttributes['history'] == "no]]]":
+        sessionAttributes['history'] = getSummary(intent_request)
+    message = "HSTRY: {}   You can always find your history by saying 'HSTRY'. What would you want to know today?".format(sessionAttributes['history'])
+    sessionAttributes['hstry'] = "done"
+    return elicit_slot(intent_request['sessionAttributes'],
+                        intent_request['currentIntent']['name'],
+                       slots,
+                       "askUser",
+                       {'contentType': 'PlainText', 'content': message}
+                       )
+    
 """ Get the users name and store it in Session Data"""
 def getNews(intent_request):
+    sessionAttributes = intent_request['sessionAttributes']
     source = intent_request['invocationSource']
+    utter = intent_request['inputTranscript']
     usersName = get_slots(intent_request)["getName"]
     slots = get_slots(intent_request)
-    sessionAttributes = intent_request['sessionAttributes']
     query = get_slots(intent_request)["askUser"]
     hist = get_slots(intent_request)['history']
-    if intent_request['inputTranscript'] != "endsesh":
+    if utter != "endsesh":
         try:
-            if "firstMessage" not in sessionAttributes:
-                sessionAttributes["firstMessage"] = "false"
-                message = "Hi there, with whom am I speaking?"
-                return elicit_slot(intent_request['sessionAttributes'],
-                                   intent_request['currentIntent']['name'],
-                                   slots,
-                                   'getName',
-                                   {'contentType': 'PlainText', 'content': message}
-                                   )
-            if usersName == None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
-                message = "That's an invalid name. Try again, please."
-                return elicit_slot(intent_request['sessionAttributes'],
-                                   intent_request['currentIntent']['name'],
-                                   slots,
-                                   'getName',
-                                   {'contentType': 'PlainText', 'content': message}
-                                   )
-            if "usersName" not in sessionAttributes:
+            if usersName != None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
                 sessionAttributes["usersName"] = usersName  # Store username in session data
-            #Later, we can check our S3 db and see if the user is new or not and change the message.
-            if "existingAcc" not in sessionAttributes:
-                sessionAttributes["existingAcc"] = "False"
-                objects = s3_client.list_objects(Bucket='mercbucket')
-                newfile = usersName+".txt"
-                for x in range(0, len(objects["Contents"])):
-                    if newfile == objects["Contents"][x]["Key"]:
-                        sessionAttributes['existingAcc'] = "True"
-            if sessionAttributes['existingAcc'] == "True" and hist == None:
-                message = "Welcome back, " + usersName + "! Do you want to view your past queries?"
+            elif "usersName" not in sessionAttributes:
+                return getuserName(intent_request)
+            if "existingAcc" not in sessionAttributes: # checks for the user account
+                checkAcc(intent_request)
+            if sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "False": #if account exists and we havent asked about the summary
+                return askSummary(intent_request)
+            elif sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "True" and "history" not in sessionAttributes: #return summary
+                if hist == 'yes' or hist == 'Yes':
+                    sessionAttributes['history'] = getSummary(intent_request)
+                else:
+                    sessionAttributes['history'] = "no]]]"
+            #gets user queries OR history
+            if sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "True" and sessionAttributes['history'] == "no]]]" and 'hstry' not in sessionAttributes:
+                message = "Never mind. You can always find your history by saying 'HSTRY'. What would you want to know today?"
+                sessionAttributes['hstry'] = "done"
                 return elicit_slot(intent_request['sessionAttributes'],
-                                intent_request['currentIntent']['name'],
-                               slots,
-                               "history",
-                               {'contentType': 'PlainText', 'content': message}
-                               )
+                                    intent_request['currentIntent']['name'],
+                                   slots,
+                                   "askUser",
+                                   {'contentType': 'PlainText', 'content': message}
+                                   )
+            elif sessionAttributes['existingAcc'] == "True" and sessionAttributes['askSumm'] == "True" and sessionAttributes['history'] != "no]]]"  and 'hstry' not in sessionAttributes:
+                message = "HSTRY: {}   You can always find your history by saying 'HSTRY'. What would you want to know today?".format(sessionAttributes['history'])
+                sessionAttributes['hstry'] = "done"
+                return elicit_slot(intent_request['sessionAttributes'],
+                                    intent_request['currentIntent']['name'],
+                                   slots,
+                                   "askUser",
+                                   {'contentType': 'PlainText', 'content': message}
+                                   )
+            elif sessionAttributes['existingAcc'] == "False" and "firstQuery" not in sessionAttributes:
+                sessionAttributes['firstQuery'] = "True"
+                message = "Hello {}! What would you want to know today?".format(sessionAttributes['usersName'])
+                return elicit_slot(intent_request['sessionAttributes'],
+                                    intent_request['currentIntent']['name'],
+                                   slots,
+                                   "askUser",
+                                   {'contentType': 'PlainText', 'content': message}
+                                   )
+            # returns history if you have the priv to do so 
+            if utter == "HSTRY" and "hstry" in sessionAttributes:
+                return hstry(intent_request)
+            # uptdates the current session's queries
+            queryCount = 0
             if "userQueries" not in sessionAttributes:
                 sessionAttributes["userQueries"] = 1
-                if (hist == 'yes' or hist == 'Yes') and query == None:
-                    s3_client.download_file('mercbucket', usersName+".txt", '/tmp/{}.txt'.format(usersName))
-                    handle = open('/tmp/{}.txt'.format(usersName), 'r')
-                    file = "SUMMARY: " + handle.read() + " What would you like me to tell you about today?"
-                    handle.close()
-                    return elicit_slot(intent_request['sessionAttributes'],
-                                    intent_request['currentIntent']['name'],
-                                   slots,
-                                   "askUser",
-                                   {'contentType': 'PlainText', 'content': file}
-                                   )
-                elif (hist == 'no' or hist == 'No') and query == None:
-                    message = "Nevermind. Anytime you want to view your history from the last completed session, say 'SUMMARY'. What would you want to know today?"
-                    return elicit_slot(intent_request['sessionAttributes'],
-                                    intent_request['currentIntent']['name'],
-                                   slots,
-                                   "askUser",
-                                   {'contentType': 'PlainText', 'content': message}
-                                   )
-                if get_slots(intent_request)['history'] != None:
-                    message = "What would you like me to tell you about today, {}?".format(usersName)
-                else:
-                    message = "Hello " + usersName + "! What would you like me to tell you about today?"
-                return elicit_slot(intent_request['sessionAttributes'],
-                                intent_request['currentIntent']['name'],
-                               slots,
-                               "askUser",
-                               {'contentType': 'PlainText', 'content': message}
-                               )
-            queryCount = int(sessionAttributes["userQueries"])
+                queryCount = 1
+            else:
+                queryCount = int(sessionAttributes["userQueries"]) + 1
+                sessionAttributes["userQueries"] = queryCount
             if "queryHistory" not in sessionAttributes:
-                sessionAttributes["queryHistory"] = json.dumps({1: query}).replace('\\','')
-            else:  
-                qh = json.loads(sessionAttributes["queryHistory"])
+                if query == None:
+                    query = "..."
+                sessionAttributes["queryHistory"] = str({1: query})
+            else:
+                if query == None:
+                    query = "..."
+                qh = sessionAttributes['queryHistory']
+                qh = ast.literal_eval(qh)
                 qh.update({queryCount:query})
-                sessionAttributes["queryHistory"] = json.dumps(qh).replace('\\','')
-            queryCount += 1
-            sessionAttributes["userQueries"] = queryCount
+                sessionAttributes["queryHistory"] = str(qh)
+            #sessionAttributes["userQueries"] = queryCount
             #check query for key words
             if query != None:
                 summary = get_news(query)
@@ -539,61 +598,52 @@ def getNews(intent_request):
                                {'contentType': 'PlainText', 'content': message}
                                )
         except Exception as e:
-           byeName(e)
+           return byeName(e)
     else:
         try:
             if "queryHistory" in sessionAttributes:
-                tmplen = json.loads(sessionAttributes["queryHistory"])
+                tmplen = ast.literal_eval(sessionAttributes["queryHistory"])
                 if len(tmplen) > 0:
                     flag = False
                     # Get a list of all objects
                     objects = s3_client.list_objects(Bucket='mercbucket')
-                    newfile = usersName+".txt"
-                    for x in range(0, len(objects["Contents"])):
+                    newfile = sessionAttributes["usersName"]+".txt"
+                    for x in range(0, len(objects["Contents"])): #looks for existing file. if it exists, make one new dict and rewrite to file
                         if newfile == objects["Contents"][x]["Key"]:
-                            
                             flag = True
                             s3_client.download_file('mercbucket', newfile, '/tmp/{}'.format(newfile))
-                            handle = open('/tmp/{}'.format(newfile), 'rb')#read old data and add it to current sessionAttr
+                            handle = open('/tmp/{}'.format(newfile), 'r')
                             userstr= handle.read()
                             handle.close()
-                            userfile = json.loads(userstr)
-                            newQueries = json.loads(sessionAttributes["queryHistory"])
-                            oldQueries = userfile["queryHistory"]
-                            length = len(oldQueries)
-    
-                            for value in newQueries.values():
-                                if value not in oldQueries.values():
-                                    length += 1
-                                    oldQueries.update({length:value})
-                            userfile["queryHistory"] = oldQueries
-                            userfile["userQueries"] = length
-                            with open('/tmp/{}.txt'.format(usersName), 'w') as handle:
-                                handle.write(str(userfile).replace("'",'"'))
+                            oldQueries = ast.literal_eval(userstr)
+                            tmpdict = {}
+                            counter = 0
+                            for values in oldQueries.values():
+                                tmpdict[counter] = values
+                                counter += 1
+                            for values in tmplen.values():
+                                tmpdict[counter] = values
+                                counter += 1
+                            with open('/tmp/{}.txt'.format(sessionAttributes["usersName"]), 'w') as handle:
+                                handle.write(str(tmpdict))
                             with open('/tmp/{}'.format(newfile), 'rb') as f:
-                                s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(usersName))
+                                s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(sessionAttributes["usersName"]))
                                 
-                    if flag == False:
-                        with open('/tmp/{}.txt'.format(usersName), 'w') as handle:#write to file
-                            sAstr = sessionAttributes["queryHistory"].replace('\\','"')
-                            sessionAttributes["queryHistory"] = str(sAstr)
-                            sAstr2 = str(sessionAttributes).replace("'",'"')
-                            sAstr2 =sAstr2.replace('"{','{')
-                            sAstr2 =sAstr2.replace('}"','}')
-                            handle.write(sAstr2)
-                            #json.dump(sAstr2, handle)
-                        with open('/tmp/{}.txt'.format(usersName), 'rb') as f:
-                            s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(usersName))
-                    byeName(usersName)
+                    if flag == False: # write the current session to file since there is no existing file
+                        with open('/tmp/{}.txt'.format(sessionAttributes["usersName"]), 'w') as handle:
+                            handle.write(str(tmplen))
+                        with open('/tmp/{}.txt'.format(sessionAttributes["usersName"]), 'rb') as f:
+                            s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(sessionAttributes["usersName"]))
+                    return byeName(sessionAttributes["usersName"])
                 else:
-                    byeName(usersName)
+                    return byeName(sessionAttributes["usersName"])
             else:
                 if "usersName" in sessionAttributes:
-                    byeName(usersName)
+                    return byeName(sessionAttributes["usersName"])
                 else:
-                    bye()
+                    return bye()
         except Exception as e:
-            byeName(e)
+            return byeName(e)
 
 
 def dispatch(intent_request):
@@ -613,5 +663,5 @@ def lambda_handler(event, context):
     try:
         return dispatch(event)
     except Exception as e:
-        byeName(e)
+        return byeName(e)
 
