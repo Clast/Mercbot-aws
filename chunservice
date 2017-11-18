@@ -12,386 +12,350 @@ import string
 import operator
 
 keywords = ["album",
- "kratz",
- "youve",
- "services",
- "july",
- "semesters",
- "nonprofit",
- "rion",
- "spectrum",
- "campaign",
- "harvey",
- "degree",
- "immigration",
- "cup",
- "survey",
- "briggs",
- "freshman",
- "offices",
- "wildenthal",
- "amp",
- "cricket",
- "taskforce",
- "sustainability",
- "chemistry",
- "possession",
- "consumption",
- "giving",
- "thermostats",
- "mercury",
- "security",
- "sacrifice",
- "dont",
- "stranded",
- "mentor",
- "valerie",
- "lee",
- "construction",
- "monuments",
- "hamilton",
- "dengle",
- "dunlop",
- "killed",
- "dispatch",
- "morgan",
- "california",
- "division",
- "event",
- "mac",
- "uemr",
- "james",
- "rachavong",
- "scar",
- "recognize",
- "burning",
- "practice",
- "disclose",
- "usa",
- "sports",
- "donors",
- "daca",
- "senators",
- "network",
- "udozorh",
- "fraternity",
- "schans",
- "odessa",
- "house",
- "mexico",
- "vigil",
- "jindalconnect",
- "nadir",
- "van",
- "efficient",
- "officers",
- "corrected",
- "always",
- "recovery",
- "record",
- "attacker",
- "athletes",
- "dreher",
- "eckel",
- "institute",
- "local",
- "aug",
- "play",
- "victims",
- "ritual",
- "mentors",
- "devices",
- "theft",
- "violence",
- "teams",
- "sculpture",
- "harrington",
- "molina",
- "leave",
- "university",
- "scared",
- "fielding",
- "mancuso",
- "access",
- "hurricane",
- "system",
- "masters",
- "victor",
- "coding",
- "perez",
- "contacted",
- "peer",
- "beijing",
- "personnel",
- "worth",
- "brothers",
- "write",
- "energy",
- "name",
- "curriculum",
- "restricted",
- "release",
- "greek",
- "fraternitys",
- "players",
- "som",
- "dues",
- "healthy",
- "lokesh",
- "relocations",
- "kill",
- "humanities",
- "shop",
- "dickson",
- "room",
- "music",
- "nancy",
- "information",
- "tacker",
- "dourty",
- "recording",
- "meetings",
- "game",
- "chartwells",
- "mccallum",
- "enrollment",
- "goodwin",
- "sg",
- "rally",
- "gattepalli",
- "mexican",
- "shooting",
- "debit",
- "roc",
- "site",
- "medical",
- "committee",
- "bad",
- "water",
- "trainer",
- "jsom",
- "removal",
- "scorch",
- "organizations",
- "cometnet",
- "relations",
- "lots",
- "cep",
- "shes",
- "arrested",
- "rogers",
- "patient",
- "different",
- "hours",
- "victors",
- "orion",
- "card",
- "photo",
- "increased",
- "weve",
- "davidson",
- "show",
- "synergy",
- "lyrics",
- "australia",
- "semester",
- "transfer",
- "kaplan",
- "der",
- "capacity",
- "west",
- "selected",
- "points",
- "department",
- "along",
- "financial",
- "jim",
- "junt",
- "vote",
- "74",
- "collin",
- "rawlings",
- "freshmen",
- "recruitment",
- "harder",
- "professorate",
- "orton",
- "head",
- "center",
- "office",
- "fla",
- "plant",
- "air",
- "weimer",
- "knowing",
- "spending",
- "opened",
- "employee",
- "welcome",
- "space",
- "visitor",
- "project",
- "criteria",
- "powergrid",
- "histories",
- "care",
- "districts",
- "food",
- "novak",
- "hickman",
- "health",
- "mat",
- "citation",
- "routers",
- "program",
- "guitar",
- "nevada",
- "votes",
- "athletic",
- "option",
- "gundy",
- "mascot",
- "successfully",
- "temperature",
- "north",
- "minor",
- "cash",
- "party",
- "rising",
- "garcia",
- "graduway",
- "emts",
- "contains",
- "isa",
- "leed",
- "pride",
- "experiment",
- "sharing",
- "guidance",
- "wordpress",
- "ceremony",
- "jose",
- "agee",
- "chief",
- "build",
- "rating",
- "fall",
- "today",
- "electricity",
- "dining",
- "crane",
- "lets",
- "jindal",
- "county",
- "found",
- "sometimes",
- "temoc",
- "michigan",
- "web",
- "houston",
- "issued",
- "council",
- "born",
- "bookstore",
- "training",
- "salm",
- "confederate",
- "courtesy",
- "june",
- "dandridge",
- "apartment",
- "songs",
- "anupam",
- "core",
- "powell",
- "lgbt",
- "mentoring",
- "expansion",
- "counseling",
- "alcohol",
- "gary",
- "protest",
- "police",
- "deffner",
- "goldvarg",
- "conservation",
- "sgs",
- "appeal",
- "dougherty",
- "platform",
- "building",
- "revision",
- "spencer",
- "carter",
- "meredith",
- "lgbtq",
- "internet",
- "response",
- "gender",
- "global",
- "october",
- "song",
- "warner",
- "bai",
- "store",
- "coffee",
- "young",
- "singh",
- "plano",
- "alumni",
- "universities",
- "printmaking",
- "accounts",
- "field",
- "kept",
- "novaks",
- "directory",
- "candidates",
- "resigned",
- "car",
- "remove",
- "justice",
- "inspection",
- "hight",
- "statue",
- "edgington",
- "citations",
- "trip",
- "score",
- "index",
- "buildings",
- "fire",
- "money",
- "zacharias",
- "arts",
- "converting",
- "staff",
- "fsl",
- "frn",
- "cannedy",
- "affairs",
- "indian",
- "classes",
- "art",
- "carolina",
- "research",
- "grown",
- "credit",
- "hall",
- "spend",
- "joining",
- "groups",
- "facility",
- "career",
- "perfect",
- "team",
- "levels",
- "atm",
- "favorite",
- "ssc",
- "100",
- "emergency"
-]
+"kratz",
+"youve",
+"services",
+"july",
+"semesters",
+"nonprofit",
+"rion",
+"spectrum",
+"campaign",
+"harvey",
+"degree",
+"immigration",
+"cup",
+"survey",
+"briggs",
+"freshman",
+"offices",
+"wildenthal",
+"amp",
+"cricket",
+"taskforce",
+"sustainability",
+"chemistry",
+"possession",
+"consumption",
+"giving",
+"thermostats",
+"mercury",
+"security",
+"sacrifice",
+"dont",
+"stranded",
+"mentor",
+"valerie",
+"lee",
+"construction",
+"monuments",
+"hamilton",
+"dengle",
+"dunlop",
+"killed",
+"dispatch",
+"morgan",
+"california",
+"division",
+"event",
+"mac",
+"uemr",
+"james",
+"rachavong",
+"scar",
+"recognize",
+"burning",
+"practice",
+"disclose",
+"usa",
+"sports",
+"donors",
+"daca",
+"senators",
+"network",
+"udozorh",
+"fraternity",
+"schans",
+"odessa",
+"house",
+"mexico",
+"vigil",
+"jindalconnect",
+"nadir",
+"van",
+"efficient",
+"officers",
+"corrected",
+"always",
+"recovery",
+"record",
+"attacker",
+"athletes",
+"dreher",
+"eckel",
+"institute",
+"local",
+"aug",
+"play",
+"victims",
+"ritual",
+"mentors",
+"devices",
+"theft",
+"violence",
+"teams",
+"sculpture",
+"harrington",
+"molina",
+"leave",
+"university",
+"scared",
+"fielding",
+"mancuso",
+"access",
+"hurricane",
+"system",
+"masters",
+"victor",
+"coding",
+"perez",
+"contacted",
+"peer",
+"beijing",
+"personnel",
+"worth",
+"brothers",
+"write",
+"energy",
+"name",
+"curriculum",
+"restricted",
+"release",
+"greek",
+"fraternitys",
+"players",
+"som",
+"dues",
+"healthy",
+"lokesh",
+"relocations",
+"kill",
+"humanities",
+"shop",
+"dickson",
+"room",
+"music",
+"nancy",
+"information",
+"tacker",
+"dourty",
+"recording",
+"meetings",
+"game",
+"chartwells",
+"mccallum",
+"enrollment",
+"goodwin",
+"sg",
+"rally",
+"gattepalli",
+"mexican",
+"shooting",
+"debit",
+"roc",
+"site",
+"medical",
+"committee",
+"bad",
+"water",
+"trainer",
+"jsom",
+"removal",
+"scorch",
+"organizations",
+"cometnet",
+"relations",
+"lots",
+"cep",
+"shes",
+"arrested",
+"rogers",
+"patient",
+"different",
+"hours",
+"victors",
+"orion",
+"card",
+"photo",
+"increased",
+"weve",
+"davidson",
+"show",
+"synergy",
+"lyrics",
+"australia",
+"semester",
+"transfer",
+"kaplan",
+"der",
+"capacity",
+"west",
+"selected",
+"points",
+"department",
+"along",
+"financial",
+"jim",
+"junt",
+"vote",
+"74",
+"collin",
+"rawlings",
+"freshmen",
+"recruitment",
+"harder",
+"professorate",
+"orton",
+"head",
+"center",
+"office",
+"fla",
+"plant",
+"air",
+"weimer",
+"knowing",
+"spending",
+"opened",
+"employee",
+"welcome",
+"space",
+"visitor",
+"project",
+"criteria",
+"powergrid",
+"histories",
+"care",
+"districts",
+"food",
+"novak",
+"hickman",
+"health",
+"mat",
+"citation",
+"routers",
+"program",
+"guitar",
+"nevada",
+"votes",
+"athletic",
+"option",
+"gundy",
+"mascot",
+"successfully",
+"temperature",
+"north",
+"minor",
+"cash",
+"party",
+"rising",
+"garcia",
+"graduway",
+"emts",
+"contains",
+"isa",
+"leed",
+"pride",
+"experiment",
+"sharing",
+"guidance",
+"wordpress",
+"ceremony",
+"jose",
+"agee",
+"chief",
+"build",
+"rating",
+"fall",
+"today",
+"electricity",
+"dining",
+"crane",
+"lets",
+"jindal",
+"county",
+"found",
+"sometimes",
+"temoc",
+"michigan",
+"web",
+"houston",
+"issued",
+"council",
+"born",
+"bookstore",
+"training",
+"salm",
+"confederate",
+"courtesy",
+"june",
+"dandridge",
+"apartment",
+"songs",
+"anupam",
+"core",
+"powell",
+"lgbt",
+"mentoring",
+"expansion",
+"counseling",
+"alcohol",
+"gary",
+"protest",
+"police",
+"deffner",
+"goldvarg",
+"conservation",
+"sgs",
+"appeal",
+"dougherty",
+"platform",
+"building",
+"revision",
+"spencer",
+"carter",
+"meredith",
+"lgbtq",
+"internet",
+"response",
+"gender",
+"global",
+"october",
+"song",
+"warner",
+"bai",
+"store",
+"coffee",
+"young",
+"singh",
+"plano",
+"alumni",
+"universities",
+"printmaking",
+"accounts",
+"field",
+"kept",
+"novaks",
+"directory",
+"candidates",
+"resigned",
+"car",
+"remove",
+"justice",
+"inspection",
+"hight",
+"statue",
+"edgington",
+"citations","trip","score","index","buildings","fire","money","zacharias","arts","converting","staff","fsl","frn","cannedy","affairs","indian","classes","art","carolina","research","grown","credit","hall","spend","joining","groups","facility","career","perfect","team","levels","atm","favorite","ssc","100","emergency"]
 s3 = boto3.resource('s3')
 s3_client = boto3.client('s3')
 s3_client.download_file('mercbucket', 'words_to_articles.pickle', '/tmp/words_to_article.pickle')
@@ -403,8 +367,11 @@ with open('/tmp/knowledge_base.pickle', 'rb') as handle:
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+
 def get_slots(intent_request):
     return intent_request['currentIntent']['slots']
+
+
 def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message):
     return {
         'sessionAttributes': session_attributes,
@@ -440,6 +407,8 @@ def get_news(query):
         return summary
     else:
         return "Sorry, the query you entered does not contain any keyword that I can use to locate any information. Please try something else or say 'endsesh' to close this session"
+
+
 def byeName(name):
     response = {
         "dialogAction": {
@@ -452,6 +421,8 @@ def byeName(name):
       }
     }
     return response
+
+
 def bye():
     response = {
         "dialogAction": {
@@ -459,11 +430,12 @@ def bye():
         "fulfillmentState": "Fulfilled",
         "message": {
           "contentType": "PlainText",
-          "content": "Bye {}!".format(name)
+          "content": "Bye!"
         }
       }
     }
     return response
+
 """ Get the users name and store it in Session Data"""
 def getNews(intent_request):
     source = intent_request['invocationSource']
@@ -471,140 +443,158 @@ def getNews(intent_request):
     slots = get_slots(intent_request)
     sessionAttributes = intent_request['sessionAttributes']
     query = get_slots(intent_request)["askUser"]
+    hist = get_slots(intent_request)['history']
     if intent_request['inputTranscript'] != "endsesh":
-        if "firstMessage" not in sessionAttributes:
-            sessionAttributes["firstMessage"] = "false"
-            message = "Hi there, with whom am I speaking?"
-            return elicit_slot(intent_request['sessionAttributes'],
-                               intent_request['currentIntent']['name'],
-                               slots,
-                               'getName',
-                               {'contentType': 'PlainText', 'content': message}
-                               )
-        if usersName == None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
-            message = "That's an invalid name. Try again, please."
-            return elicit_slot(intent_request['sessionAttributes'],
-                               intent_request['currentIntent']['name'],
-                               slots,
-                               'getName',
-                               {'contentType': 'PlainText', 'content': message}
-                               )
-        if "usersName" not in sessionAttributes:
-            sessionAttributes["usersName"] = usersName  # Store username in session data
-        #Later, we can check our S3 db and see if the user is new or not and change the message.
-        """if 'existingAcc' not in sessionAttributes:
-            sessionAttributes['existingAcc'] = False
-        if str(sessionAttributes['existingAcc']) == 'False'
-            objects = s3_client.list_objects(Bucket='mercbucket')
-            newfile = usersName+".txt"
-            for x in range(0, len(objects["Contents"])):
-                if newfile == objects["Contents"][x]["Key"]:
-                    sessionAttributes['existingAcc'] = True
-        elif str(sessionAttributes['existingAcc']) == 'True' and get_slots(intent_request)['history'] == None:
-            message = "Welcome back, " + usersName + "! Do you want to view your past queries?"
-            return elicit_slot(intent_request['sessionAttributes'],
-                            intent_request['currentIntent']['name'],
-                           slots,
-                           "history",
-                           {'contentType': 'PlainText', 'content': message}
-                           )
-        elif get_slots(intent_request)['history'] == 'yes' or get_slots(intent_request)['history'] == 'Yes':
-            s3_client.download_file('mercbucket', usersName+".txt", '/tmp/{}.txt'.format(usersName))
-            handle = open('/tmp/{}.txt'.format(usersName), 'rb')
-            file = handle.read()
-            handle.close()
-            return elicit_slot(intent_request['sessionAttributes'],
-                            intent_request['currentIntent']['name'],
-                           slots,
-                           "askUser",
-                           {'contentType': 'PlainText', 'content': file}
-                           )"""
-        if "userQueries" not in sessionAttributes:
-            sessionAttributes["userQueries"] = 1
-            message = "Hello " + usersName + "! What would you like me to tell you about today?"
-            return elicit_slot(intent_request['sessionAttributes'],
-                            intent_request['currentIntent']['name'],
-                           slots,
-                           "askUser",
-                           {'contentType': 'PlainText', 'content': message}
-                           )
-        queryCount = int(sessionAttributes["userQueries"])
-        if "queryHistory" not in sessionAttributes:
-            sessionAttributes["queryHistory"] = json.dumps({1: query}).replace('\\','')
-        else:  
-            qh = json.loads(sessionAttributes["queryHistory"])
-            qh.update({queryCount:query})
-            sessionAttributes["queryHistory"] = json.dumps(qh).replace('\\','')
-        queryCount += 1
-        sessionAttributes["userQueries"] = queryCount
-        #check query for key words
-        if query != None:
-            summary = get_news(query)
-            return elicit_slot(intent_request['sessionAttributes'],
-                            intent_request['currentIntent']['name'],
-                           slots,
-                           "askUser",
-                           {'contentType': 'PlainText', 'content': summary}
-                           )
-        else:
-            message = "I'm sorry but I have no information on your query '{}'. Please ask me something else".format(query)
-            return elicit_slot(intent_request['sessionAttributes'],
-                            intent_request['currentIntent']['name'],
-                           slots,
-                           "askUser",
-                           {'contentType': 'PlainText', 'content': message}
-                           )
-    else:
-        if "queryHistory" in sessionAttributes:
-            tmplen = json.loads(sessionAttributes["queryHistory"])
-            if len(tmplen) > 0:
-                flag = False
-                # Get a list of all objects
+        try:
+            if "firstMessage" not in sessionAttributes:
+                sessionAttributes["firstMessage"] = "false"
+                message = "Hi there, with whom am I speaking?"
+                return elicit_slot(intent_request['sessionAttributes'],
+                                   intent_request['currentIntent']['name'],
+                                   slots,
+                                   'getName',
+                                   {'contentType': 'PlainText', 'content': message}
+                                   )
+            if usersName == None and "firstMessage" in sessionAttributes and "usersName" not in sessionAttributes:
+                message = "That's an invalid name. Try again, please."
+                return elicit_slot(intent_request['sessionAttributes'],
+                                   intent_request['currentIntent']['name'],
+                                   slots,
+                                   'getName',
+                                   {'contentType': 'PlainText', 'content': message}
+                                   )
+            if "usersName" not in sessionAttributes:
+                sessionAttributes["usersName"] = usersName  # Store username in session data
+            #Later, we can check our S3 db and see if the user is new or not and change the message.
+            if "existingAcc" not in sessionAttributes:
+                sessionAttributes["existingAcc"] = "False"
                 objects = s3_client.list_objects(Bucket='mercbucket')
                 newfile = usersName+".txt"
                 for x in range(0, len(objects["Contents"])):
                     if newfile == objects["Contents"][x]["Key"]:
-                        
-                        flag = True
-                        s3_client.download_file('mercbucket', newfile, '/tmp/{}'.format(newfile))
-                        handle = open('/tmp/{}'.format(newfile), 'rb')#read old data and add it to current sessionAttr
-                        userstr= handle.read()
-                        handle.close()
-                        userfile = json.loads(userstr)
-                        newQueries = json.loads(sessionAttributes["queryHistory"])
-                        oldQueries = userfile["queryHistory"]
-                        length = len(oldQueries)
-
-                        for value in newQueries.values():
-                            if value not in oldQueries.values():
-                                length += 1
-                                oldQueries.update({length:value})
-                        userfile["queryHistory"] = oldQueries
-                        userfile["userQueries"] = length
-                        with open('/tmp/{}.txt'.format(usersName), 'w') as handle:
-                            handle.write(str(userfile).replace("'",'"'))
-                        with open('/tmp/{}'.format(newfile), 'rb') as f:
-                            s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(usersName))
+                        sessionAttributes['existingAcc'] = "True"
+            if sessionAttributes['existingAcc'] == "True" and hist == None:
+                message = "Welcome back, " + usersName + "! Do you want to view your past queries?"
+                return elicit_slot(intent_request['sessionAttributes'],
+                                intent_request['currentIntent']['name'],
+                               slots,
+                               "history",
+                               {'contentType': 'PlainText', 'content': message}
+                               )
+            if "userQueries" not in sessionAttributes:
+                sessionAttributes["userQueries"] = 1
+                if (hist == 'yes' or hist == 'Yes') and query == None:
+                    s3_client.download_file('mercbucket', usersName+".txt", '/tmp/{}.txt'.format(usersName))
+                    handle = open('/tmp/{}.txt'.format(usersName), 'r')
+                    file = "SUMMARY: " + handle.read() + " What would you like me to tell you about today?"
+                    handle.close()
+                    return elicit_slot(intent_request['sessionAttributes'],
+                                    intent_request['currentIntent']['name'],
+                                   slots,
+                                   "askUser",
+                                   {'contentType': 'PlainText', 'content': file}
+                                   )
+                elif (hist == 'no' or hist == 'No') and query == None:
+                    message = "Nevermind. Anytime you want to view your history from the last completed session, say 'SUMMARY'. What would you want to know today?"
+                    return elicit_slot(intent_request['sessionAttributes'],
+                                    intent_request['currentIntent']['name'],
+                                   slots,
+                                   "askUser",
+                                   {'contentType': 'PlainText', 'content': message}
+                                   )
+                if get_slots(intent_request)['history'] != None:
+                    message = "What would you like me to tell you about today, {}?".format(usersName)
+                else:
+                    message = "Hello " + usersName + "! What would you like me to tell you about today?"
+                return elicit_slot(intent_request['sessionAttributes'],
+                                intent_request['currentIntent']['name'],
+                               slots,
+                               "askUser",
+                               {'contentType': 'PlainText', 'content': message}
+                               )
+            queryCount = int(sessionAttributes["userQueries"])
+            if "queryHistory" not in sessionAttributes:
+                sessionAttributes["queryHistory"] = json.dumps({1: query}).replace('\\','')
+            else:  
+                qh = json.loads(sessionAttributes["queryHistory"])
+                qh.update({queryCount:query})
+                sessionAttributes["queryHistory"] = json.dumps(qh).replace('\\','')
+            queryCount += 1
+            sessionAttributes["userQueries"] = queryCount
+            #check query for key words
+            if query != None:
+                summary = get_news(query)
+                return elicit_slot(intent_request['sessionAttributes'],
+                                intent_request['currentIntent']['name'],
+                               slots,
+                               "askUser",
+                               {'contentType': 'PlainText', 'content': summary}
+                               )
+            else:
+                message = "I'm sorry but I have no information on your query '{}'. Please ask me something else".format(query)
+                return elicit_slot(intent_request['sessionAttributes'],
+                                intent_request['currentIntent']['name'],
+                               slots,
+                               "askUser",
+                               {'contentType': 'PlainText', 'content': message}
+                               )
+        except Exception as e:
+           byeName(e)
+    else:
+        try:
+            if "queryHistory" in sessionAttributes:
+                tmplen = json.loads(sessionAttributes["queryHistory"])
+                if len(tmplen) > 0:
+                    flag = False
+                    # Get a list of all objects
+                    objects = s3_client.list_objects(Bucket='mercbucket')
+                    newfile = usersName+".txt"
+                    for x in range(0, len(objects["Contents"])):
+                        if newfile == objects["Contents"][x]["Key"]:
                             
-                if flag == False:
-                    with open('/tmp/{}.txt'.format(usersName), 'w') as handle:#write to file
-                        sAstr = sessionAttributes["queryHistory"].replace('\\','"')
-                        sessionAttributes["queryHistory"] = str(sAstr)
-                        sAstr2 = str(sessionAttributes).replace("'",'"')
-                        sAstr2 =sAstr2.replace('"{','{')
-                        sAstr2 =sAstr2.replace('}"','}')
-                        handle.write(sAstr2)
-                        #json.dump(sAstr2, handle)
-                    with open('/tmp/{}.txt'.format(usersName), 'rb') as f:
-                        s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(usersName))
-                byeName(usersName)
+                            flag = True
+                            s3_client.download_file('mercbucket', newfile, '/tmp/{}'.format(newfile))
+                            handle = open('/tmp/{}'.format(newfile), 'rb')#read old data and add it to current sessionAttr
+                            userstr= handle.read()
+                            handle.close()
+                            userfile = json.loads(userstr)
+                            newQueries = json.loads(sessionAttributes["queryHistory"])
+                            oldQueries = userfile["queryHistory"]
+                            length = len(oldQueries)
+    
+                            for value in newQueries.values():
+                                if value not in oldQueries.values():
+                                    length += 1
+                                    oldQueries.update({length:value})
+                            userfile["queryHistory"] = oldQueries
+                            userfile["userQueries"] = length
+                            with open('/tmp/{}.txt'.format(usersName), 'w') as handle:
+                                handle.write(str(userfile).replace("'",'"'))
+                            with open('/tmp/{}'.format(newfile), 'rb') as f:
+                                s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(usersName))
+                                
+                    if flag == False:
+                        with open('/tmp/{}.txt'.format(usersName), 'w') as handle:#write to file
+                            sAstr = sessionAttributes["queryHistory"].replace('\\','"')
+                            sessionAttributes["queryHistory"] = str(sAstr)
+                            sAstr2 = str(sessionAttributes).replace("'",'"')
+                            sAstr2 =sAstr2.replace('"{','{')
+                            sAstr2 =sAstr2.replace('}"','}')
+                            handle.write(sAstr2)
+                            #json.dump(sAstr2, handle)
+                        with open('/tmp/{}.txt'.format(usersName), 'rb') as f:
+                            s3_client.upload_fileobj(f, 'mercbucket', '{}.txt'.format(usersName))
+                    byeName(usersName)
+                else:
+                    byeName(usersName)
             else:
-                byeName(usersName)
-        else:
-            if "usersName" in sessionAttributes:
-                byeName(usersName)
-            else:
-                bye()
+                if "usersName" in sessionAttributes:
+                    byeName(usersName)
+                else:
+                    bye()
+        except Exception as e:
+            byeName(e)
+
 
 def dispatch(intent_request):
     logger.debug(
@@ -617,6 +607,11 @@ def dispatch(intent_request):
         return getNews(intent_request)
 
     raise Exception('Intent with name ' + intent_name + ' not supported')
+
+
 def lambda_handler(event, context):
-    return dispatch(event)
+    try:
+        return dispatch(event)
+    except Exception as e:
+        byeName(e)
 
