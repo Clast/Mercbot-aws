@@ -39,7 +39,7 @@ def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message)
     }
 def get_news(query):
     possible_target_article = {}
-    for word in query.split():
+    for word in query.lower().split():
         if word in keywords:
             contained = words_to_articles.get(word, "")
             for k in contained:
@@ -294,6 +294,7 @@ def getNews(intent_request):
                 else:
                     return bye()
         except Exception as e:
+            log.debug()
             return byeName(e)
 def dispatch(intent_request):
     logger.debug(
